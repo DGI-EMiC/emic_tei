@@ -1,0 +1,7 @@
+; $Id$
+name = Emic TEI Presentation
+description = Presentation of TEI information
+dependencies[] = fedora_repository
+dependencies[] = islandora_book
+package = Emic Tools
+core = 6.x

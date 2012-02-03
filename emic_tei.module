@@ -1,0 +1,37 @@
+<?php
+
+function emic_tei_menu() {
+  $items = array();
+  $items['emic/show/tei'] = array(
+    'file' => 'emic_tei_show.inc',
+    'page callback' => 'emic_show_tei',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('use TILE'),
+  );
+
+  return $items;
+}
+
+function emic_tei_perm() {
+  return array(
+    'use TEI',
+    'Create TEI',
+  );
+}
+
+
+function emic_tei_islandora_tabs($content_models, $pid) {
+  $item = new Fedora_Item($pid);
+  if(!isset($item->datastreams['TEI'])){
+    return;
+  }
+  module_load_include('inc', 'emic_tei', 'emic_tei_form');
+  $content_model = $content_models[0]->pid;
+  if ($content_model == 'islandora:bookCModel') {
+    $return_tab = get_tei_tab_content($pid);
+    return $return_tab;
+  }
+
+
+
+}

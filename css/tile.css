@@ -1,0 +1,14 @@
+
+#tile-iframe{
+  left:0;
+  position:absolute;
+  width:100%;
+}
+
+.block {
+  display:none;
+}
+
+body #tile-iframe{
+  display:block;
+}
