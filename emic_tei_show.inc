@@ -1,22 +1,27 @@
 <?php
 
 function emic_show_tei($pid, $xslt) {
-  $xslt_path = drupal_get_path("module", 'emic_tei') . "/xml/$xslt";
+  global $base_url;
+  drupal_add_css(drupal_get_path('module', 'emic_tei') . '/xml/pkp.css');
+  $path = drupal_get_path('module', 'emic_tei');
+  $xslt_path = "$base_url/" . drupal_get_path("module", 'emic_tei') . "/xml/$xslt";
   $fedora_base = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
-  $file_url = "$fedora_base/objects/$pid/datastreams/TEI/content";
-  $lines = @file($file_url);
-  $xmlstr = '';
-  foreach ($lines as $line) {
-    $xmlstr .= $line;
+  $xml_path = "$fedora_base/objects/$pid/datastreams/TEI/content";
+  $output = file_get_contents("http://localhost:8080/saxon/SaxonServlet?source=$xml_path&style=$xslt_path");
+
+  return $output;
+}
+
+function emic_serve_gile($type, $identifier) {
+  $fedora_base = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
+
+  if ($type == 'xml') {
+    $file_path = "$fedora_base/objects/$identifier/datastreams/TEI/content";
   }
-  $proc = new XsltProcessor();
-  $xsl = new DomDocument();
-  $xsl->load($xslt_path);
-  $input = new DomDocument();
-  $input->loadXML(trim($xmlstr));
-  $xsl = $proc->importStylesheet($xsl);
-  $newdom = $proc->transformToDoc($input);
-  $content = $newdom->saveXML();
-  return $content;
+  if ($type == 'xsl') {
+    $file_path = drupal_get_path("module", 'emic_tei') . "/xml/$identifier";
+  }
+
+  print file_get_contents($file_path);
 }
 

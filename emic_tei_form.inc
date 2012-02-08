@@ -27,18 +27,24 @@ function emic_tei_form($form, $pid) {
     '#description' => t('Selects which xslt will be used to transform TEI'),
     '#type' => 'select',
     '#options' => $options,
+    '#attributes' => array('id' => 'tei_xsl_chooser', 'class' => 'jumpmenu')
   );
-    $form['submit'] = array(
-      '#type' => 'submit',
-      '#value' => t('Create view'),
-
-    );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Create view'),
+    '#attributes' => array('class' => 'hide_submit'),
+  );
 
   return $form;
-
 }
-function emic_tei_form_submit($form, &$form_state){
+
+function emic_tei_form_submit($form, &$form_state) {
   $xsl = $form_state['values']['choose_xsl'];
   $pid = $form_state['values']['pid'];
   drupal_goto("emic/show/tei/$pid/$xsl");
+}
+
+function emic_build_page($pid) {
+  $output = drupal_get_form('emic_tei_form', $pid);
+  return $output;
 }

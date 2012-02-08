@@ -9,6 +9,13 @@ function emic_tei_menu() {
     'access arguments' => array('use TILE'),
   );
 
+    $items['emic/page'] = array(
+    'file' => 'emic_tei_form.inc',
+    'page callback' => 'emic_build_page',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('use CWRC'),
+  );
+
   return $items;
 }
 
@@ -19,10 +26,9 @@ function emic_tei_perm() {
   );
 }
 
-
-function emic_tei_islandora_tabs($content_models, $pid) {
+function disabled_emic_tei_islandora_tabs($content_models, $pid) {
   $item = new Fedora_Item($pid);
-  if(!isset($item->datastreams['TEI'])){
+  if (!isset($item->datastreams['TEI'])) {
     return;
   }
   module_load_include('inc', 'emic_tei', 'emic_tei_form');
@@ -31,7 +37,16 @@ function emic_tei_islandora_tabs($content_models, $pid) {
     $return_tab = get_tei_tab_content($pid);
     return $return_tab;
   }
-
-
-
 }
+
+function emic_tei_islandora_book_links($pid) {
+  $item = new Fedora_Item($pid);
+  if (!isset($item->datastreams['TEI'])) {
+    return;
+  }
+
+  $link = l('TEI Transformations', "emic/page/$pid");
+  return $link;
+}
+
+//method is get_tei_tab_content
