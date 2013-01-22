@@ -39,7 +39,9 @@ function disabled_emic_tei_islandora_tabs($content_models, $pid) {
   }
 }
 
-function emic_tei_islandora_book_links($pid) {
+
+function emic_tei_islandora_book_get_bookview_links($pid){
+ 
   $item = new Fedora_Item($pid);
   if (!isset($item->datastreams['TEI'])) {
     return;
