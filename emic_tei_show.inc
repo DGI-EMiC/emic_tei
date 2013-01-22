@@ -7,7 +7,9 @@ function emic_show_tei($pid, $xslt) {
   $xslt_path = "$base_url/" . drupal_get_path("module", 'emic_tei') . "/xml/$xslt";
   $fedora_base = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
   $xml_path = "$fedora_base/objects/$pid/datastreams/TEI/content";
-  $output = file_get_contents("http://localhost:8080/saxon/SaxonServlet?source=$xml_path&style=$xslt_path");
+  $output = l(t('Return to Transform Selecteor'), "emic/page/$pid") . "<br />";
+  $output .= l(t('Return to book view'), "fedora/repository/$pid") . "<br /><br />";
+  $output .= file_get_contents("http://localhost:8080/saxon/SaxonServlet?source=$xml_path&style=$xslt_path");
 
   return $output;
 }
